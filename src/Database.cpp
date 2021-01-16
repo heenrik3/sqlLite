@@ -35,7 +35,7 @@ void Database::open(std::string tableName)
     else {
       bool error = false;
 
-      error = (bool) sqlite3_open(tableName.c_str(), &this->db);
+      error = sqlite3_open(tableName.c_str(), &this->db);
 
       if (error) {
           std::cerr << "Error open DB " << sqlite3_errmsg(this->db) << std::endl;
@@ -91,6 +91,11 @@ void Database::createTable()
 
     if(this->isDatabaseOpen())
     {
+      /*std::vector<std::string> command;
+
+      command.push_back(" ");
+      command.push_back("Error creating table!");
+      command.push_back("Table deleted!"); */
 
       std::string command[3] = {" ", "Error creating table!", "Table deleted!"};
       command[1] = this->getSQLCommand();
@@ -134,7 +139,7 @@ std::string Database::getSQLCommand()
     std::cout << "\n\t command to be executed: \n" + cmd << std::endl;
     std::cout << "\n\t Input SQL command, e to exit: " << std::endl;
     fflush(stdin);
-    std::getline(std::cin,*temp);
+    std::getline(std::cin, *temp);
 
     if(*temp == "e")
     {

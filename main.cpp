@@ -1,7 +1,10 @@
 #include <iostream>
+#include "include/Database.hpp"
 
 int main(int argc, char const *argv[])
 {
-    std::cout << "Hello World" << std::endl;
+    Database* db = new Database();
+    db->open("f.db");
+    delete db;
     return 0;
 }
