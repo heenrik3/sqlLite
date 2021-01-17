@@ -120,7 +120,7 @@ void Database::deleteTable()
 void Database::insertData()
 {
 
-    std::string command[3] = {"", "Error inserting data!", "New data added!"};
+    std::string command[3] = {" ", "Error inserting data!", "New data added!"};
     command[1] = (this->getSQLCommand()); //this->getSQLCommand();
 
     this->sqlExecInsDel(command);
