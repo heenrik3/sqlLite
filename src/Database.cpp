@@ -22,7 +22,7 @@ Database::~Database()
     }
 
 }
-
+/*
 void Database::open(std::string tableName)
 {
     if (this->isDatabaseOpen())
@@ -44,7 +44,7 @@ void Database::open(std::string tableName)
         }
     }
 
-}
+} */
 
 void Database::close()
 {
@@ -58,9 +58,9 @@ void Database::close()
 
 }
 
-void Database::createDatabase()
+void Database::createOrOpenDatabase()
 {
-    bool error = false;                     // boolean to test the return command
+    int error = 0;                     // boolean to test the return command
     const char *dbName;
     std::string *name = new std::string;
 
@@ -76,12 +76,13 @@ void Database::createDatabase()
     error = sqlite3_open(dbName, &this->db);
 
     if (error) {
-        std::cerr << "Error creating DB " << sqlite3_errmsg(this->db) << std::endl;
-    } else {
-        std::cout << "Database created Successfully!" << std::endl;
-      }
+        std::cout << "Error creating DB: " << sqlite3_errmsg(this->db) << std::endl;
+    }
+    else
+    {
+        std::cout << "Database created/opened Successfully!" << std::endl;
 
-    this->close();
+    }
 
     delete name;
 }
@@ -91,16 +92,11 @@ void Database::createTable()
 
     if(this->isDatabaseOpen())
     {
-      /*std::vector<std::string> command;
 
-      command.push_back(" ");
-      command.push_back("Error creating table!");
-      command.push_back("Table deleted!"); */
+      std::string command[3] = {" ", "Error creating table!", "Table created!"};
+      command[1] = getSQLCommand();
 
-      std::string command[3] = {" ", "Error creating table!", "Table deleted!"};
-      command[1] = this->getSQLCommand();
 
-      this->sqlExecInsDel(command);
     } else {
 
       std::cout << "No open database!" << std::endl;
@@ -113,84 +109,46 @@ void Database::deleteTable()
   std::string command[3] = {" ", "Error deleting table!", "Table deleted!"};
   command[1] = this->getSQLCommand();
 
-  this->sqlExecInsDel(command);
+
 
 }
 
 void Database::insertData()
 {
+    int insertionResult = 0;
 
     std::string command[3] = {" ", "Error inserting data!", "New data added!"};
-    command[1] = (this->getSQLCommand()); //this->getSQLCommand();
 
-    this->sqlExecInsDel(command);
+    std::string sql = getSQLCommand();
+
+    insertionResult = sqlite3_exec(this->db, sql.c_str(), callback, NULL, NULL);
+
+    if (insertionResult != SQLITE_OK)
+    {
+      std::cerr << command[2] << '\n';
+
+    } else
+
+    {
+      std::cout << command[3] << '\n';
+    }
+
 
 }
 
 std::string Database::getSQLCommand()
 {
-  bool running = true;
-  std::string cmd = "";
-  std::string *temp = new std::string;
+    std::string command = " ";
 
-  while(running)
-  {
-    //system("clear");
-    std::cout << "\n\t command to be executed: \n" + cmd << std::endl;
-    std::cout << "\n\t Input SQL command, e to exit: " << std::endl;
+    std::cout << "\n\t Input SQL command: " << std::endl;
+
     fflush(stdin);
-    std::getline(std::cin, *temp);
 
-    if(*temp == "e")
-    {
-      running = false;
-    }
-     else {
-        cmd += *temp;
-      }
-  }
+    std::getline(std::cin, command);
 
-  delete temp;
-  return cmd;
+    return command;
 }
 
-void Database::sqlExec(std::string command[3])
-{
-
-  int exit = 0;
-  char* messaggeError;
-
-  exit = sqlite3_exec(this->db, command[1].c_str(), callback, 0, &messaggeError);
-
-  if (exit != SQLITE_OK) {
-      std::cerr << command[2] << std::endl;
-      sqlite3_free(messaggeError);
-      //return false;
-  }
-  else {
-      std::cout << command[3] << std::endl;
-      //return true;
-  }
-
-}
-
-void Database::sqlExecInsDel(std::string command[3])
-{
-    int exit = 0;
-    char* messaggeError;
-
-    exit = sqlite3_exec(this->db, command[1].c_str(), NULL, 0, &messaggeError);
-
-    if (exit != SQLITE_OK) {
-        std::cerr << command[2] << std::endl;
-        sqlite3_free(messaggeError);
-        //return false;
-    }
-    else {
-        std::cout << command[3] << std::endl;
-        //return true;
-    }
-}
 
 bool Database::isDatabaseOpen()
 {

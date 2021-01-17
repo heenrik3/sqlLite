@@ -13,20 +13,18 @@ class Database
     public:
       Database();
       virtual ~Database();
-      void open(std::string);
       void close();
-      void createDatabase();
+      void createOrOpenDatabase();
       void createTable();
       void deleteTable();
       void insertData();
 
 
     private:
-      sqlite3 *db;            // database pointer
+      sqlite3 *db;            // database connection
 
-      std::string getSQLCommand();              // return a string containing an sql command by the user
-      void sqlExec(std::string command[3]);     // receives an string array containing a comand, a positive and negative error messages
-      void sqlExecInsDel(std::string command[3]);  //
+      std::string getSQLCommand();              // returns a string containing an sql command by the user
+
       bool isDatabaseOpen();
 
 };
