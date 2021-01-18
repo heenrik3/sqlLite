@@ -60,7 +60,7 @@ void Database::close()
 
 void Database::createOrOpenDatabase()
 {
-    int error = 0;                     // boolean to test the return command
+    int error;                     // boolean to test the return command
     const char *dbName;
     std::string *name = new std::string;
 
@@ -76,6 +76,7 @@ void Database::createOrOpenDatabase()
     error = sqlite3_open(dbName, &this->db);
 
     if (error) {
+
         std::cout << "Error creating DB: " << sqlite3_errmsg(this->db) << std::endl;
     }
     else
@@ -89,13 +90,17 @@ void Database::createOrOpenDatabase()
 
 void Database::createTable()
 {
-
+  
     if(this->isDatabaseOpen())
     {
 
-      std::string command[3] = {" ", "Error creating table!", "Table created!"};
-      command[1] = getSQLCommand();
+      std::string messages[3] = {"",
+                                "Error Create Table",
+                                "Table created Successfully"};
 
+      messages[0] = getSqlCommand();
+
+      execSQL(messages);
 
     } else {
 
@@ -107,7 +112,7 @@ void Database::deleteTable()
 {
   //sql = "DELETE FROM PERSON WHERE ID = 2;";
   std::string command[3] = {" ", "Error deleting table!", "Table deleted!"};
-  command[1] = this->getSQLCommand();
+  command[1] = getSqlCommand();
 
 
 
@@ -115,30 +120,20 @@ void Database::deleteTable()
 
 void Database::insertData()
 {
-    int insertionResult = 0;
 
-    std::string command[3] = {" ", "Error inserting data!", "New data added!"};
+  std::string messages[3] = {"",
+                            "Error inserting data",
+                            "Data inserted successfully"};
 
-    std::string sql = getSQLCommand();
+  messages[0] = getSqlCommand();
 
-    insertionResult = sqlite3_exec(this->db, sql.c_str(), callback, NULL, NULL);
-
-    if (insertionResult != SQLITE_OK)
-    {
-      std::cerr << command[2] << '\n';
-
-    } else
-
-    {
-      std::cout << command[3] << '\n';
-    }
-
+  execSQL(messages);
 
 }
 
-std::string Database::getSQLCommand()
+std::string Database::getSqlCommand()
 {
-    std::string command = " ";
+    std::string command;
 
     std::cout << "\n\t Input SQL command: " << std::endl;
 
@@ -149,6 +144,28 @@ std::string Database::getSQLCommand()
     return command;
 }
 
+void Database::execSQL(std::string messages[3])     // receives a string array: first position holds sql
+                                                    //  command, second and third holds negative and positive messages
+{
+
+  int exit;
+  char* messaggeError;
+
+  exit = sqlite3_exec(db,
+                      messages[0].c_str(),      // string is converted to char array
+                      NULL,
+                      0,
+                      &messaggeError);
+
+  if (exit != SQLITE_OK) {
+
+      std::cerr << messages[1] << std::endl;
+
+      sqlite3_free(messaggeError);
+  }
+  else
+      std::cout << messages[2] << std::endl;
+}
 
 bool Database::isDatabaseOpen()
 {
