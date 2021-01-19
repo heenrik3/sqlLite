@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cstdbool>
+#include <ifstream>
 #include <vector>
 #include <new>
 
@@ -24,6 +25,7 @@ class Database
     private:
       sqlite3 *db;            // database connection
 
+      void getResources();
       std::string getSqlCommand();   // returns a string containing an sql command by the user
 
       void execSQL(std::string messages[3]);
