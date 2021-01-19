@@ -3,11 +3,13 @@
 
 #include <iostream>
 #include <cstdbool>
-#include <ifstream>
 #include <vector>
+#include <string>
+#include <map>
 #include <new>
 
 #include "sqlite3.h"
+#include "ResourceBundle.hpp"
 
 static int callback(void *NotUsed, int argc, char **argv, char **azColName);
 
@@ -23,9 +25,9 @@ class Database
       void insertData();
 
     private:
-      sqlite3 *db;            // database connection
+      sqlite3 *db;                    // database connection
+      ResourceBundle *resources;    // holds strings resources to be used
 
-      void getResources();
       std::string getSqlCommand();   // returns a string containing an sql command by the user
 
       void execSQL(std::string messages[3]);

@@ -7,7 +7,7 @@ int main(int argc, char const *argv[])
     db->createOrOpenDatabase();
 
     db->createTable();
-    db->insertData();
+    //db->insertData();
 
     delete db;
     return 0;

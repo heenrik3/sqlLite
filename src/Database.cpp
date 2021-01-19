@@ -13,7 +13,7 @@ Database::Database()
 {
     this->db = NULL;
 
-    getResources();
+    resources = new ResourceBundle();
 }
 
 Database::~Database()
@@ -22,6 +22,8 @@ Database::~Database()
     {
       this->close();
     }
+
+    delete resources;
 
 }
 /*
@@ -95,14 +97,25 @@ void Database::createTable()
 
     if(isDatabaseOpen())
     {
+      std::cout << "oaaooadasdaodjosa" << '\n';
+      std::string messages[3] = {"dgfg", " ghdh", "dggf"};
+      std::string tmp;
 
-      std::string messages[3] = {"",
-                                "Error Create Table",
-                                "Table created Successfully"};
+      int i = 1;
+      std::string f;
+      std::cout << "oaaooadasdaodjosa" << '\n';
+      for (auto item : resources->table_messages)
+      {
+        f = item.second;
+        messages[i] = f;
+        i++;
+        std::cout << item.second << '\n';
+      }
+      std::cout << "oaaooadasdaodjosa" << '\n';
+      //getSqlCommand();
 
-      messages[0] = getSqlCommand();
 
-      execSQL(messages);
+      //execSQL(messages);
 
     } else {
 
@@ -122,42 +135,16 @@ void Database::deleteTable()
 
 void Database::insertData()
 {
-
-  std::string messages[3] = {"",
-                            "Error inserting data",
-                            "Data inserted successfully"};
+  std::string messages[3];
 
   messages[0] = getSqlCommand();
+  messages[1] = resources->insert_messages["error"];
+  messages[2] = resources->insert_messages["created"];
 
   execSQL(messages);
 
 }
 
-void Database::getResources()
-{
-  ifstream resources;
-
-  resources.open("en_US.dat");
-
-  if (resources.is_open()) {
-
-    std::string line;
-    struct res tableRes;
-    int i = 0;
-
-    while ( std::getline(resources, line) )
-    {
-      tableRes[i] = line;
-      i++;
-    }
-    resources.close();
-  }
-  else
-  {
-      std::cout << "Error opening file" << std::endl;
-      exit(1);
-  }
-}
 
 std::string Database::getSqlCommand()
 {
