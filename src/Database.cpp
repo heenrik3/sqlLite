@@ -12,6 +12,8 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
 Database::Database()
 {
     this->db = NULL;
+
+    resources = new ResourceBundle();
 }
 
 Database::~Database()
@@ -20,6 +22,8 @@ Database::~Database()
     {
       this->close();
     }
+
+    delete resources;
 
 }
 /*
@@ -90,17 +94,28 @@ void Database::createOrOpenDatabase()
 
 void Database::createTable()
 {
-  
-    if(this->isDatabaseOpen())
+
+    if(isDatabaseOpen())
     {
+      std::cout << "oaaooadasdaodjosa" << '\n';
+      std::string messages[3] = {"dgfg", " ghdh", "dggf"};
+      std::string tmp;
 
-      std::string messages[3] = {"",
-                                "Error Create Table",
-                                "Table created Successfully"};
+      int i = 1;
+      std::string f;
+      std::cout << "oaaooadasdaodjosa" << '\n';
+      for (auto item : resources->table_messages)
+      {
+        f = item.second;
+        messages[i] = f;
+        i++;
+        std::cout << item.second << '\n';
+      }
+      std::cout << "oaaooadasdaodjosa" << '\n';
+      //getSqlCommand();
 
-      messages[0] = getSqlCommand();
 
-      execSQL(messages);
+      //execSQL(messages);
 
     } else {
 
@@ -112,7 +127,7 @@ void Database::deleteTable()
 {
   //sql = "DELETE FROM PERSON WHERE ID = 2;";
   std::string command[3] = {" ", "Error deleting table!", "Table deleted!"};
-  command[1] = getSqlCommand();
+  command[0] = getSqlCommand();
 
 
 
@@ -120,16 +135,16 @@ void Database::deleteTable()
 
 void Database::insertData()
 {
-
-  std::string messages[3] = {"",
-                            "Error inserting data",
-                            "Data inserted successfully"};
+  std::string messages[3];
 
   messages[0] = getSqlCommand();
+  messages[1] = resources->insert_messages["error"];
+  messages[2] = resources->insert_messages["created"];
 
   execSQL(messages);
 
 }
+
 
 std::string Database::getSqlCommand()
 {
@@ -144,8 +159,8 @@ std::string Database::getSqlCommand()
     return command;
 }
 
-void Database::execSQL(std::string messages[3])     // receives a string array: first position holds sql
-                                                    //  command, second and third holds negative and positive messages
+void Database::execSQL(std::string messages[3])     // receives a string array: first position holds an sql command,
+                                                    // second and third holds negative and positive messages for the result
 {
 
   int exit;
