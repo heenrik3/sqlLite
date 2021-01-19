@@ -40,6 +40,8 @@ void ResourceBundle::loadResources(std::map<std::string, std::string> m, std::st
 
       m[key] = value;
 
+      std::cout << key + " " + value  << '\n';
+      
     }
 
     stringResources.close();

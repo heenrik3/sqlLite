@@ -85,7 +85,7 @@ void Database::createOrOpenDatabase()
     }
     else
     {
-        std::cout << "Database created/opened Successfully!" << std::endl;
+        std::cout << "Database created/opened successfully!" << std::endl;
 
     }
 
@@ -97,21 +97,16 @@ void Database::createTable()
 
     if(isDatabaseOpen())
     {
-      std::cout << "oaaooadasdaodjosa" << '\n';
-      std::string messages[3] = {"dgfg", " ghdh", "dggf"};
-      std::string tmp;
 
-      int i = 1;
-      std::string f;
-      std::cout << "oaaooadasdaodjosa" << '\n';
-      for (auto item : resources->table_messages)
-      {
-        f = item.second;
-        messages[i] = f;
-        i++;
-        std::cout << item.second << '\n';
+      std::string messages[3] = {"dgfg", " ghdh", "dggf"};
+      std::string a;
+
+      for (auto item : resources->table_messages) {
+        a = item.first + item.second;
+        std::cout << a << '\n';
       }
-      std::cout << "oaaooadasdaodjosa" << '\n';
+
+
       //getSqlCommand();
 
 
