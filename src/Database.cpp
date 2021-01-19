@@ -12,6 +12,8 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
 Database::Database()
 {
     this->db = NULL;
+
+    getResources();
 }
 
 Database::~Database()
@@ -90,8 +92,8 @@ void Database::createOrOpenDatabase()
 
 void Database::createTable()
 {
-  
-    if(this->isDatabaseOpen())
+
+    if(isDatabaseOpen())
     {
 
       std::string messages[3] = {"",
@@ -112,7 +114,7 @@ void Database::deleteTable()
 {
   //sql = "DELETE FROM PERSON WHERE ID = 2;";
   std::string command[3] = {" ", "Error deleting table!", "Table deleted!"};
-  command[1] = getSqlCommand();
+  command[0] = getSqlCommand();
 
 
 
@@ -131,6 +133,32 @@ void Database::insertData()
 
 }
 
+void Database::getResources()
+{
+  ifstream resources;
+
+  resources.open("en_US.dat");
+
+  if (resources.is_open()) {
+
+    std::string line;
+    struct res tableRes;
+    int i = 0;
+
+    while ( std::getline(resources, line) )
+    {
+      tableRes[i] = line;
+      i++;
+    }
+    resources.close();
+  }
+  else
+  {
+      std::cout << "Error opening file" << std::endl;
+      exit(1);
+  }
+}
+
 std::string Database::getSqlCommand()
 {
     std::string command;
@@ -144,8 +172,8 @@ std::string Database::getSqlCommand()
     return command;
 }
 
-void Database::execSQL(std::string messages[3])     // receives a string array: first position holds sql
-                                                    //  command, second and third holds negative and positive messages
+void Database::execSQL(std::string messages[3])     // receives a string array: first position holds an sql command,
+                                                    // second and third holds negative and positive messages for the result
 {
 
   int exit;
