@@ -10,16 +10,21 @@
 
 ResourceBundle::ResourceBundle()
 {
-    loadResources(table_messages, "resources/en/table.dat");
-    loadResources(insert_messages, "resources/en/insert.dat");
+    std::string path = "resources/en/";
+
+    this->table_messages = loadResources(path + "table.dat");
+    this->insert_messages = loadResources(path + "insert.dat");
+    this->delete_messages = loadResources(path + "deletion.dat");
 }
 
 ResourceBundle::~ResourceBundle()
 {
-
+    delete this->table_messages;
+    delete this->insert_messages;
+    delete this->delete_messages;
 }
 
-void ResourceBundle::loadResources(std::map<std::string, std::string> m, std::string path)
+std::map<std::string, std::string>* ResourceBundle::loadResources(std::string path)
 {
   std::fstream stringResources;
 
@@ -28,7 +33,11 @@ void ResourceBundle::loadResources(std::map<std::string, std::string> m, std::st
   if (stringResources.is_open()) {
 
     int position;
+    std::map<std::string,
+              std::string> *m;
     std::string line, key, value;
+
+    m  = new std::map<std::string, std::string>;
 
     while ( std::getline(stringResources, line) )
     {
@@ -38,11 +47,12 @@ void ResourceBundle::loadResources(std::map<std::string, std::string> m, std::st
 
       value = line.substr(position + 1);
 
-      m[key] = value;
-
+      (*m)[key] = value;
     }
 
     stringResources.close();
+
+    return m;
   }
   else
   {

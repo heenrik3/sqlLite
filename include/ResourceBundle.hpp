@@ -16,16 +16,16 @@
 class ResourceBundle {
 
 public:
-    std::map<std::string, std::string> table_messages;
-    std::map<std::string, std::string> insert_messages;
-    std::map<std::string, std::string> delete_messages;
+    std::map<std::string, std::string> *table_messages;            //  maps holds strings info based on
+    std::map<std::string, std::string> *insert_messages;           //  language preferences
+    std::map<std::string, std::string> *delete_messages;           //
 
     ResourceBundle();
     ~ResourceBundle();
 
 private:
 
-    void loadResources(std::map<std::string, std::string> m, std::string path);
+    std::map<std::string, std::string>* loadResources(std::string path);    // returns a map pointer with string resources
 
 };
 
