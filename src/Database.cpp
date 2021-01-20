@@ -137,23 +137,13 @@ void Database::deleteTable()
   command[0] = getSqlCommand();
 
 
-
 }
 
 void Database::insertData()
 {
   if(isDatabaseOpen())
   {
-    std::string messages[3] = {"qweqe", "asdd ", " asdijad"};
-
-    getResource(*resources->insert_messages, messages);
-
-    messages[0] = getSqlCommand();
-
-    for (int i = 0; i < 3; i++) {
-      std::cout << "\n i: " + std::to_string(i) + " " + messages[i] << '\n';
-    }
-    /* execSQL(messages); */
+      setResourceAndExec(*resources->insert_messages);
 
   } else {
 
