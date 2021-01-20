@@ -4,6 +4,7 @@
 int main(int argc, char const *argv[])
 {
     Database* db = new Database();
+
     db->createOrOpenDatabase();
 
     db->createTable();

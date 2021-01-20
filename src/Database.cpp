@@ -9,6 +9,31 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    return 0;
 }
 
+void getResource(std::map<std::string, std::string> m, std::string messages[3])
+{
+  int index = 1;
+
+  for (auto item : m)
+  {
+      messages[index] = item.second;
+      index++;
+  }
+}
+
+std::string getSqlCommand()
+{
+    std::string command;
+
+    std::cout << "\n\t Input SQL command: " << std::endl;
+
+    fflush(stdin);
+
+    std::getline(std::cin, command);
+
+    return command;
+}
+
+
 Database::Database()
 {
     this->db = NULL;
@@ -97,20 +122,7 @@ void Database::createTable()
 
     if(isDatabaseOpen())
     {
-
-      std::string messages[3] = {"dgfg", " ghdh", "dggf"};
-      std::string a;
-
-      for (auto item : resources->table_messages) {
-        a = item.first + item.second;
-        std::cout << a << '\n';
-      }
-
-
-      //getSqlCommand();
-
-
-      //execSQL(messages);
+        setResourceAndExec(*resources->table_messages);
 
     } else {
 
@@ -130,33 +142,39 @@ void Database::deleteTable()
 
 void Database::insertData()
 {
-  std::string messages[3];
+  if(isDatabaseOpen())
+  {
+    std::string messages[3] = {"qweqe", "asdd ", " asdijad"};
 
-  messages[0] = getSqlCommand();
-  messages[1] = resources->insert_messages["error"];
-  messages[2] = resources->insert_messages["created"];
+    getResource(*resources->insert_messages, messages);
 
-  execSQL(messages);
+    messages[0] = getSqlCommand();
+
+    for (int i = 0; i < 3; i++) {
+      std::cout << "\n i: " + std::to_string(i) + " " + messages[i] << '\n';
+    }
+    /* execSQL(messages); */
+
+  } else {
+
+    std::cout << "No open database!" << std::endl;
+  }
 
 }
 
-
-std::string Database::getSqlCommand()
+void Database::setResourceAndExec(std::map<std::string, std::string> m)
 {
-    std::string command;
+  std::string messages[3] = {"", "", ""};
 
-    std::cout << "\n\t Input SQL command: " << std::endl;
+  getResource(m, messages);
 
-    fflush(stdin);
+  messages[0] = getSqlCommand();
 
-    std::getline(std::cin, command);
-
-    return command;
+  execSQL(messages);
 }
 
 void Database::execSQL(std::string messages[3])     // receives a string array: first position holds an sql command,
-                                                    // second and third holds negative and positive messages for the result
-{
+{                                                  // second and third holds negative and positive messages for the result
 
   int exit;
   char* messaggeError;
@@ -169,12 +187,12 @@ void Database::execSQL(std::string messages[3])     // receives a string array: 
 
   if (exit != SQLITE_OK) {
 
-      std::cerr << messages[1] << std::endl;
+      std::cerr << messages[2] << std::endl;
 
       sqlite3_free(messaggeError);
   }
   else
-      std::cout << messages[2] << std::endl;
+      std::cout << messages[1] << std::endl;
 }
 
 bool Database::isDatabaseOpen()
