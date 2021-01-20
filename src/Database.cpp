@@ -9,7 +9,7 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    return 0;
 }
 
-void getResource(std::map<std::string, std::string> m, std::string messages[3])
+void getMapValues(std::map<std::string, std::string> m, std::string messages[3])
 {
   int index = 1;
 
@@ -162,11 +162,11 @@ void Database::insertData()
 
 }
 
-void Database::setResourceAndExec(std::map<std::string, std::string> m)
-{
+void Database::setResourceAndExec(std::map<std::string, std::string> m)   // function receives a map, retrieves its values
+{                                                                         // and insert them on array. [0] hold an SQLCommand, others
   std::string messages[3] = {"", "", ""};
 
-  getResource(m, messages);
+  getMapValues(m, messages);
 
   messages[0] = getSqlCommand();
 
