@@ -9,7 +9,9 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    return 0;
 }
 
-void getMapValues(std::map<std::string, std::string> m, std::string messages[3])
+void getMapValues(std::map<std::string,
+                  std::string> m,
+                  std::string messages[3])
 {
   int index = 1;
 
@@ -43,9 +45,9 @@ Database::Database()
 
 Database::~Database()
 {
-    if(this->isDatabaseOpen())
+    if(isDatabaseOpen())
     {
-      this->close();
+      close();
     }
 
     delete resources;
@@ -77,11 +79,11 @@ void Database::open(std::string tableName)
 
 void Database::close()
 {
-    if(this->isDatabaseOpen()) {
-      sqlite3_close(this->db);
-      this->db = NULL;
+  
+    if(isDatabaseOpen()) {
+      sqlite3_close(db);
+      db = NULL;
     } else {
-
       std::cout << "No open database!" << std::endl;
     }
 
@@ -130,15 +132,6 @@ void Database::createTable()
     }
 }
 
-void Database::deleteTable()
-{
-  //sql = "DELETE FROM PERSON WHERE ID = 2;";
-  std::string command[3] = {" ", "Error deleting table!", "Table deleted!"};
-  command[0] = getSqlCommand();
-
-
-}
-
 void Database::insertData()
 {
   if(isDatabaseOpen())
@@ -149,7 +142,28 @@ void Database::insertData()
 
     std::cout << "No open database!" << std::endl;
   }
+}
 
+void Database::deleteTable()
+{
+  if(isDatabaseOpen())
+  {
+      setResourceAndExec(*resources->delete_messages);
+
+  } else {
+
+    std::cout << "No open database!" << std::endl;
+  }
+}
+
+bool Database::isDatabaseOpen()
+{
+    if(this->db == NULL)
+    {
+      return false;
+    }
+
+    return true;
 }
 
 void Database::setResourceAndExec(std::map<std::string, std::string> m)   // function receives a map, retrieves its values
@@ -183,14 +197,4 @@ void Database::execSQL(std::string messages[3])     // receives a string array: 
   }
   else
       std::cout << messages[1] << std::endl;
-}
-
-bool Database::isDatabaseOpen()
-{
-    if(this->db == NULL)
-    {
-      return false;
-    }
-
-    return true;
 }
