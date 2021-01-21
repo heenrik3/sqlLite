@@ -26,8 +26,9 @@ class Database
       void close();
       void createOrOpenDatabase();
       void createTable();
-      void deleteTable();
       void insertData();
+      void deleteTable();
+
 
     private:
       sqlite3 *db;                    // database connection
