@@ -12,6 +12,7 @@ ResourceBundle::ResourceBundle()
 {
     std::string path = "resources/en/";
 
+    this->database_messages = loadResources(path + "database.dat");
     this->table_messages = loadResources(path + "table.dat");
     this->insert_messages = loadResources(path + "insert.dat");
     this->delete_messages = loadResources(path + "deletion.dat");
@@ -19,6 +20,7 @@ ResourceBundle::ResourceBundle()
 
 ResourceBundle::~ResourceBundle()
 {
+    delete this->database_messages;
     delete this->table_messages;
     delete this->insert_messages;
     delete this->delete_messages;
