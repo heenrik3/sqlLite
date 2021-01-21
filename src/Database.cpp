@@ -1,5 +1,10 @@
 #include "../include/Database.hpp"
 
+void clear()    // clear screen
+{
+  system("clear");
+}
+
 static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    int i;
    for(i = 0; i<argc; i++) {
@@ -9,7 +14,9 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    return 0;
 }
 
-void getMapValues(std::map<std::string, std::string> m, std::string messages[3])
+void getMapValues(std::map<std::string,
+                  std::string> m,
+                  std::string messages[3])
 {
   int index = 1;
 
@@ -18,19 +25,6 @@ void getMapValues(std::map<std::string, std::string> m, std::string messages[3])
       messages[index] = item.second;
       index++;
   }
-}
-
-std::string getSqlCommand()
-{
-    std::string command;
-
-    std::cout << "\n\t Input SQL command: " << std::endl;
-
-    fflush(stdin);
-
-    std::getline(std::cin, command);
-
-    return command;
 }
 
 
@@ -43,9 +37,9 @@ Database::Database()
 
 Database::~Database()
 {
-    if(this->isDatabaseOpen())
+    if(isDatabaseOpen())
     {
-      this->close();
+      close();
     }
 
     delete resources;
@@ -77,12 +71,12 @@ void Database::open(std::string tableName)
 
 void Database::close()
 {
-    if(this->isDatabaseOpen()) {
-      sqlite3_close(this->db);
-      this->db = NULL;
-    } else {
 
-      std::cout << "No open database!" << std::endl;
+    if(isDatabaseOpen()) {
+      sqlite3_close(db);
+      db = NULL;
+    } else {
+      std::cout << (*resources->database_messages)["notOpen"] << std::endl;
     }
 
 }
@@ -91,106 +85,111 @@ void Database::createOrOpenDatabase()
 {
     int error;                     // boolean to test the return command
     const char *dbName;
-    std::string *name = new std::string;
+    std::string tmpName;
 
-    std::cout << "\n\tDatabase name:" << std::endl;
+    clear();
+    std::cout << (*resources->database_messages)["name"] << std::endl;
 
     fflush(stdin);
-    std::getline(std::cin, *name);
+    std::getline(std::cin, tmpName);
 
-    *name = *name + ".db";                 // add .db at the end of string to form "databaseName".db
+    tmpName += ".db";                 // add .db at the end of string to form "databaseName".db
 
-    dbName = name->c_str();               // databaseName is converted to char array
+    dbName = tmpName.c_str();               // databaseName is converted to char array that is required by the sqlite3_open function
 
     error = sqlite3_open(dbName, &this->db);
 
     if (error) {
-
-        std::cout << "Error creating DB: " << sqlite3_errmsg(this->db) << std::endl;
+        clear();
+        std::cout << (*resources->database_messages)["error"] << sqlite3_errmsg(this->db) << std::endl;
     }
     else
     {
-        std::cout << "Database created/opened successfully!" << std::endl;
+        clear();
+        std::cout << (*resources->database_messages)["success"] << std::endl;
 
     }
 
-    delete name;
 }
 
 void Database::createTable()
 {
-
-    if(isDatabaseOpen())
-    {
-        setResourceAndExec(*resources->table_messages);
-
-    } else {
-
-      std::cout << "No open database!" << std::endl;
-    }
-}
-
-void Database::deleteTable()
-{
-  //sql = "DELETE FROM PERSON WHERE ID = 2;";
-  std::string command[3] = {" ", "Error deleting table!", "Table deleted!"};
-  command[0] = getSqlCommand();
-
-
+    setResourceAndExec(*resources->table_messages);
 }
 
 void Database::insertData()
 {
+    setResourceAndExec(*resources->insert_messages);
+}
+
+void Database::deleteTable()
+{
+    setResourceAndExec(*resources->delete_messages);
+}
+
+bool Database::isDatabaseOpen()
+{
+    if(db == NULL)
+    {
+      return false;
+    }
+
+    return true;
+}
+
+std::string Database::getSqlCommand()
+{
+    std::string command;
+
+    clear();
+    std::cout << (*resources->database_messages)["input"] << std::endl;
+
+    fflush(stdin);
+
+    std::getline(std::cin, command);
+
+    return command;
+}
+
+void Database::setResourceAndExec(std::map<std::string, std::string> m)   // this func receives a map containing strings resources,
+{                                                                         // test if there's a database connection, asks for SQL command
+                                                                          // and pass them to be executed
   if(isDatabaseOpen())
   {
-      setResourceAndExec(*resources->insert_messages);
+    std::string sql = getSqlCommand();
 
-  } else {
-
-    std::cout << "No open database!" << std::endl;
+    execSQL(sql, m);
   }
+  else {
 
+    clear();
+    std::cout << (*resources->database_messages)["notOpen"] << std::endl;
+  }
 }
 
-void Database::setResourceAndExec(std::map<std::string, std::string> m)   // function receives a map, retrieves its values
-{                                                                         // and insert them on array. [0] hold an SQLCommand, others
-  std::string messages[3] = {"", "", ""};
-
-  getMapValues(m, messages);
-
-  messages[0] = getSqlCommand();
-
-  execSQL(messages);
-}
-
-void Database::execSQL(std::string messages[3])     // receives a string array: first position holds an sql command,
-{                                                  // second and third holds negative and positive messages for the result
-
+void Database::execSQL(std::string sql,
+                      std::map<std::string, std::string> m)     // receives a string containing an sql command,
+{                                                               // and a map containing error and success messages
   int exit;
   char* messaggeError;
 
   exit = sqlite3_exec(db,
-                      messages[0].c_str(),      // string is converted to char array
+                      sql.c_str(),      // sql string is converted to char array required by the function
                       NULL,
                       0,
                       &messaggeError);
 
   if (exit != SQLITE_OK) {
 
-      std::cerr << messages[2] << std::endl;
+      clear();
+      std::cerr << m["error"] << std::endl;
 
       sqlite3_free(messaggeError);
   }
   else
-      std::cout << messages[1] << std::endl;
-}
+  {
+    clear();
+    std::cout << m["success"] << std::endl;
+  }
 
-bool Database::isDatabaseOpen()
-{
-    if(this->db == NULL)
-    {
-      return false;
-    }
-
-    return true;
 }
