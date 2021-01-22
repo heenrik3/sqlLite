@@ -93,7 +93,7 @@ void Database::createOrOpenDatabase()
     fflush(stdin);
     std::getline(std::cin, tmpName);
 
-    tmpName += ".db";                 // add .db at the end of string to form "databaseName".db
+    tmpName += ".db";                       // add .db at the end of string to form "databaseName".db
 
     dbName = tmpName.c_str();               // databaseName is converted to char array that is required by the sqlite3_open function
 
