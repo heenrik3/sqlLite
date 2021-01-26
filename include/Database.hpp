@@ -26,7 +26,7 @@ class Database
       void deleteTable();
 
     private:
-      sqlite3 *db;                                 // database connection
+      sqlite3 *db;                                // database connection
       ResourceBundle *resources;                  // holds a map bundle with strings resources to be used
 
       bool isDatabaseOpen();                      // checks if there's a database connection available
@@ -37,7 +37,7 @@ class Database
       void setResourceAndExec(std::map<std::string,
                                 std::string> m);  // receives a map with string resources
 
-      bool createDatabase();
+      bool createDatabase();                      // creates db
 
 };
 #endif // DATABASE_HPP
