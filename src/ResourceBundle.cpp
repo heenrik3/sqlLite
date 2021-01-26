@@ -10,20 +10,36 @@
 
 ResourceBundle::ResourceBundle()
 {
-    std::string path = "resources/en/";
-
-    this->database_messages = loadResources(path + "database.dat");
-    this->table_messages = loadResources(path + "table.dat");
-    this->insert_messages = loadResources(path + "insert.dat");
-    this->delete_messages = loadResources(path + "deletion.dat");
+    initializer();
 }
 
 ResourceBundle::~ResourceBundle()
 {
-    delete this->database_messages;
-    delete this->table_messages;
-    delete this->insert_messages;
-    delete this->delete_messages;
+    deleteResources();
+}
+
+void ResourceBundle::setLocale(std::string loc)
+{
+
+    deleteResources();
+    initializer(loc);
+
+}
+
+void ResourceBundle::initializer(std::string loc)
+{
+  std::string path, dbName, tableName, insertName, deleteName;
+
+  path       = "resources/" + loc + "/";
+  dbName     = "database.dat";
+  tableName  = "table.dat";
+  insertName = "insert.dat";
+  deleteName = "deletion.dat";
+
+  database_messages = loadResources(path + dbName);
+  table_messages    = loadResources(path + tableName);
+  insert_messages   = loadResources(path + insertName);
+  delete_messages   = loadResources(path + deleteName);
 }
 
 std::map<std::string, std::string>* ResourceBundle::loadResources(std::string path)
@@ -61,4 +77,12 @@ std::map<std::string, std::string>* ResourceBundle::loadResources(std::string pa
       std::cout << "Error opening file: " + path << std::endl;
       exit(1);
   }
+}
+
+void ResourceBundle::deleteResources()
+{
+  delete database_messages;
+  delete table_messages;
+  delete insert_messages;
+  delete delete_messages;
 }
