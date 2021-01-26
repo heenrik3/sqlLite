@@ -43,13 +43,13 @@ std::map<std::string, std::string>* ResourceBundle::loadResources(std::string pa
 
     while ( std::getline(stringResources, line) )
     {
-      position = line.find(":");
+      position = line.find(":");              // finds the " : " between key and value
 
-      key = line.substr(0, position);
+      key = line.substr(0, position);         // all the characters before " : " becomes a key
 
-      value = line.substr(position + 1);
+      value = line.substr(position + 1);      // all the characters after " : " becomes a value
 
-      (*newMap)[key] = value;
+      (*newMap)[key] = value;                 // map receives the key and the value of that line
     }
 
     stringResources.close();
