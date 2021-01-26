@@ -24,10 +24,14 @@ public:
     ResourceBundle();
     ~ResourceBundle();
 
+    void setLocale(std::string locale);
+
 private:
 
+    void initializer(std::string = "en");
     std::map<std::string, std::string>* loadResources(std::string path);    // returns a map pointer with string resources
 
+    void deleteResources();
 };
 
 #endif /* ResourceBundle_hpp */

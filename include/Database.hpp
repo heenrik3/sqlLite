@@ -9,10 +9,9 @@
 
 #include "sqlite3.h"
 #include "ResourceBundle.hpp"
+#include "utilityFunctions.hpp"
 
 static int callback(void *NotUsed, int argc, char **argv, char **azColName);
-
-void clear();
 
 class Database
 {
@@ -26,17 +25,23 @@ class Database
       void insertData();
       void deleteTable();
 
+      void changeLocale();
+
     private:
-      sqlite3 *db;                                 // database connection
+      sqlite3 *db;                                // database connection
       ResourceBundle *resources;                  // holds a map bundle with strings resources to be used
 
+      bool createDatabase();                      // creates db
       bool isDatabaseOpen();                      // checks if there's a database connection available
-      std::string getSqlCommand();                // returns a string containing an sql command by the user
+
       void execSQL(std::string sql,
                     std::map<std::string,
                      std::string> m);             // receives a string with an sql command and a map
       void setResourceAndExec(std::map<std::string,
-                                std::string> m);  // receives a map with resources
+                                std::string> m);  // receives a map with string resources
+
+      std::string getSqlCommand();                // asks for an input and returns a string containing an sql command by the user
+
 
 };
 #endif // DATABASE_HPP

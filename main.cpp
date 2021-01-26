@@ -3,12 +3,12 @@
 
 int main(int argc, char const *argv[])
 {
-    Database* db = new Database();
-
+    Database *db = new Database();
     db->createOrOpenDatabase();
 
-    db->createTable();
-    //db->insertData();
+    db->changeLocale("pt");
+    db->createOrOpenDatabase();
+
 
     delete db;
     return 0;

@@ -1,10 +1,5 @@
 #include "../include/Database.hpp"
 
-void clear()    // clear screen
-{
-  system("clear");
-}
-
 static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    int i;
    for(i = 0; i<argc; i++) {
@@ -14,23 +9,10 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    return 0;
 }
 
-void getMapValues(std::map<std::string,
-                  std::string> m,
-                  std::string messages[3])
-{
-  int index = 1;
-
-  for (auto item : m)
-  {
-      messages[index] = item.second;
-      index++;
-  }
-}
-
 
 Database::Database()
 {
-    this->db = NULL;
+    this->db = nullptr;
 
     resources = new ResourceBundle();
 }
@@ -74,7 +56,7 @@ void Database::close()
 
     if(isDatabaseOpen()) {
       sqlite3_close(db);
-      db = NULL;
+      db = nullptr;
     } else {
       std::cout << (*resources->database_messages)["notOpen"] << std::endl;
     }
@@ -83,23 +65,7 @@ void Database::close()
 
 void Database::createOrOpenDatabase()
 {
-    int error;                     // boolean to test the return command
-    const char *dbName;
-    std::string tmpName;
-
-    clear();
-    std::cout << (*resources->database_messages)["name"] << std::endl;
-
-    fflush(stdin);
-    std::getline(std::cin, tmpName);
-
-    tmpName += ".db";                 // add .db at the end of string to form "databaseName".db
-
-    dbName = tmpName.c_str();               // databaseName is converted to char array that is required by the sqlite3_open function
-
-    error = sqlite3_open(dbName, &this->db);
-
-    if (error) {
+    if (createDatabase()) {
         clear();
         std::cout << (*resources->database_messages)["error"] << sqlite3_errmsg(this->db) << std::endl;
     }
@@ -107,7 +73,6 @@ void Database::createOrOpenDatabase()
     {
         clear();
         std::cout << (*resources->database_messages)["success"] << std::endl;
-
     }
 
 }
@@ -127,9 +92,16 @@ void Database::deleteTable()
     setResourceAndExec(*resources->delete_messages);
 }
 
+void Database::changeLocale()
+{
+
+    resources->setLocale(locale);
+
+}
+
 bool Database::isDatabaseOpen()
 {
-    if(db == NULL)
+    if(db == nullptr)
     {
       return false;
     }
@@ -191,5 +163,25 @@ void Database::execSQL(std::string sql,
     clear();
     std::cout << m["success"] << std::endl;
   }
+
+}
+
+bool Database::createDatabase()
+{
+  const char *dbName;
+  std::string tmpName;
+
+  clear();
+
+  std::cout << (*resources->database_messages)["name"] << std::endl;
+
+  fflush(stdin);
+  std::getline(std::cin, tmpName);
+
+  tmpName += ".db";                       // add .db at the end of string to form "databaseName".db
+
+  dbName = tmpName.c_str();               // databaseName is converted to char array that is required by the sqlite3_open function
+
+  return (bool) sqlite3_open(dbName, &this->db);
 
 }
