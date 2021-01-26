@@ -25,6 +25,8 @@ class Database
       void insertData();
       void deleteTable();
 
+      void changeLocale();
+
     private:
       sqlite3 *db;                                // database connection
       ResourceBundle *resources;                  // holds a map bundle with strings resources to be used

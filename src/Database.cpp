@@ -92,6 +92,13 @@ void Database::deleteTable()
     setResourceAndExec(*resources->delete_messages);
 }
 
+void Database::changeLocale()
+{
+
+    resources->setLocale(locale);
+
+}
+
 bool Database::isDatabaseOpen()
 {
     if(db == nullptr)
