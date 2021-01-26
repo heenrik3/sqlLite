@@ -95,6 +95,9 @@ void Database::deleteTable()
 void Database::changeLocale()
 {
 
+    std::string locale;
+    locale = "pt";
+    
     resources->setLocale(locale);
 
 }
