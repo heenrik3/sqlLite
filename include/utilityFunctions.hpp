@@ -15,7 +15,7 @@
 #define clears "cls" // windows
 #endif
 
-#ifdef linux
+#ifdef __linux__
 #define clears "clear" // linux
 #endif
 
