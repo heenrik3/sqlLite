@@ -36,10 +36,10 @@ std::map<std::string, std::string>* ResourceBundle::loadResources(std::string pa
 
     int position;
     std::map<std::string,
-              std::string> *m;
+              std::string> *newMap;
     std::string line, key, value;
 
-    m  = new std::map<std::string, std::string>;
+    newMap  = new std::map<std::string, std::string>;
 
     while ( std::getline(stringResources, line) )
     {
@@ -49,12 +49,12 @@ std::map<std::string, std::string>* ResourceBundle::loadResources(std::string pa
 
       value = line.substr(position + 1);
 
-      (*m)[key] = value;
+      (*newMap)[key] = value;
     }
 
     stringResources.close();
 
-    return m;
+    return newMap;
   }
   else
   {
