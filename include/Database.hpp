@@ -29,15 +29,17 @@ class Database
       sqlite3 *db;                                // database connection
       ResourceBundle *resources;                  // holds a map bundle with strings resources to be used
 
+      bool createDatabase();                      // creates db
       bool isDatabaseOpen();                      // checks if there's a database connection available
-      std::string getSqlCommand();                // asks for an input and returns a string containing an sql command by the user
+
       void execSQL(std::string sql,
                     std::map<std::string,
                      std::string> m);             // receives a string with an sql command and a map
       void setResourceAndExec(std::map<std::string,
                                 std::string> m);  // receives a map with string resources
 
-      bool createDatabase();                      // creates db
+      std::string getSqlCommand();                // asks for an input and returns a string containing an sql command by the user
+
 
 };
 #endif // DATABASE_HPP
