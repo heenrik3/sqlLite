@@ -73,7 +73,6 @@ void Database::createOrOpenDatabase()
     {
         clear();
         std::cout << (*resources->database_messages)["success"] << std::endl;
-
     }
 
 }
