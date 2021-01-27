@@ -13,6 +13,8 @@
 #include <fstream>
 #include <map>
 
+#include "utilityFunctions.hpp"
+
 class Menu {
 
 public:
@@ -23,8 +25,8 @@ public:
     ~Menu();
 
     std::map<std::string, std::string>* load(std::string path);
-    void destroy();
 
+    void destroy();
     void show();
 
 };

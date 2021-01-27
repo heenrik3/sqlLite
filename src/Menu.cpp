@@ -10,7 +10,7 @@
 
 Menu::Menu()
 {
-    menuItems = load("resource/en/menu.dat");
+    menuItems = load("resources/en/menu.dat");
 }
 
 Menu::~Menu()
@@ -58,17 +58,32 @@ std::map<std::string, std::string>* Menu::load(std::string path)
 
 void Menu::destroy()
 {
-
     delete menuItems;
-
 }
 
 void Menu::show()
 {
+    std::string buffer;
+    int choice, min, max;
 
-    for (auto item : *menuItems)
-    {
-      std::cout << item << '\n';
-    }
+    choice = 0; min = 1; max = 6;
+
+    do {
+      clear();
+
+      for (int i = min; i < max; i++)
+      {
+        std::cout << std::to_string(i) + ". " + (*menuItems)["menu" + std::to_string(i)] << std::endl;
+      }
+
+      std::cout << (*menuItems)["option"] << std::endl;
+
+      std::getline(std::cin, buffer);
+
+      try {
+        choice = std::stoi(buffer);
+      } catch(const std::invalid_argument& ia) {}   // when inserted letters as arguments
+
+    } while(choice < min || choice > max-1);
 
 }
