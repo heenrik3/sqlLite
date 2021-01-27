@@ -1,15 +1,10 @@
 #include <iostream>
 #include "include/Database.hpp"
+#include "include/Menu.hpp"
 
 int main(int argc, char const *argv[])
 {
-    Database *db = new Database();
-    db->createOrOpenDatabase();
-
-    db->changeLocale();
-    db->createOrOpenDatabase();
-
-
-    delete db;
+    Menu *m = new Menu();
+    m->show();
     return 0;
 }
