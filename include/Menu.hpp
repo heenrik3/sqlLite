@@ -13,21 +13,22 @@
 #include <fstream>
 #include <map>
 
+#include "Resource_Bundle.hpp"
 #include "utilityFunctions.hpp"
 
 class Menu {
 
 public:
 
-  std::map<std::string, std::string> *menuItems;
+  Resource_Bundle *menuItems;
+  int option;
 
     Menu();
     ~Menu();
 
-    std::map<std::string, std::string>* load(std::string path);
-
-    void destroy();
     void show();
+    int getOption();
+    void destroy();
 
 };
 

@@ -5,7 +5,6 @@
 int main(int argc, char const *argv[])
 {
     Menu *m = new Menu();
-    m->show();
-    
+
     return 0;
 }
