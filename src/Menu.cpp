@@ -20,7 +20,6 @@ Menu::~Menu()
     destroy();
 }
 
-
 void Menu::show()
 {
     std::string buffer;

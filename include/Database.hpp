@@ -21,9 +21,11 @@ class Database
       virtual ~Database();
       void close();
       void createOrOpenDatabase();
+      void execute(std::string query);
+      /*
       void createTable();
       void insertData();
-      void deleteTable();
+      void deleteTable();*/
 
       void changeLocale();
 

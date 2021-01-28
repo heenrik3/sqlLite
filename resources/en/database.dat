@@ -1,5 +1,5 @@
 name:Database name:
-error:Error creating DB:
-success:Database created/opened successfully!
+error:Not executed
+success:Command executed successfully
 notOpen:No open database!
 input:Input SQL command:

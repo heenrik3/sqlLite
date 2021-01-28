@@ -55,8 +55,11 @@ void Database::close()
 {
 
     if(isDatabaseOpen()) {
+
       sqlite3_close(db);
+
       db = nullptr;
+
     } else {
       std::cout << (*resources->database_messages)["notOpen"] << std::endl;
     }
@@ -77,6 +80,31 @@ void Database::createOrOpenDatabase()
 
 }
 
+void Database::execute(std::string query)
+{
+  int exit;
+  char* messaggeError;
+
+  exit = sqlite3_exec(db,
+                      query.c_str(),      // sql string is converted to char array required by the function
+                      NULL,
+                      0,
+                      &messaggeError);
+
+  if (exit != SQLITE_OK) {
+
+      clear();
+      std::cerr << (*resources->database_messages)["error"] << std::endl;
+
+      sqlite3_free(messaggeError);
+  }
+  else
+  {
+    clear();
+    std::cout << (*resources->database_messages)["success"] << std::endl;
+  }
+}
+/*
 void Database::createTable()
 {
     setResourceAndExec(*resources->table_messages);
@@ -91,13 +119,10 @@ void Database::deleteTable()
 {
     setResourceAndExec(*resources->delete_messages);
 }
-
-void Database::changeLocale()
+*/
+void Database::changeLocale(std::string locale)
 {
 
-    std::string locale;
-    locale = "pt";
-    
     resources->setLocale(locale);
 
 }
