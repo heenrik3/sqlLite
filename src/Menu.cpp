@@ -25,7 +25,7 @@ void Menu::show()
     std::string buffer;
     int min, max;
 
-    min = 1; max = 6;
+    min = 1; max = 7;
 
     do {
       clear();
@@ -42,7 +42,7 @@ void Menu::show()
       try {
         this->option = std::stoi(buffer);
       } catch(const std::invalid_argument& ia) {}   // when inserted letters as arguments
-
+        catch(const std::out_of_range& ia) {}
     } while(this->option < min || this->option > max-1);
 }
 
@@ -53,7 +53,7 @@ int Menu::getOption()
 
 void Menu::changeLocale(std::string path)
 {
-    menuItems->modifyBundle(path);
+    menuItems->modifyBundle(path + "menu.dat");
 }
 
 void Menu::destroy()
