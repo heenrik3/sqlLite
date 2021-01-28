@@ -20,15 +20,17 @@ class Menu {
 
 public:
 
-  Resource_Bundle *menuItems;
-  int option;
+    Resource_Bundle *menuItems;
+    int option;
 
-    Menu();
+    Menu(std::string path);
     ~Menu();
 
-    void show();
     int getOption();
+
+    void show();
     void destroy();
+    void changeLocale(std::string path);
 
 };
 

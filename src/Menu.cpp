@@ -8,11 +8,11 @@
 
 #include "../include/Menu.hpp"
 
-Menu::Menu()
+Menu::Menu(std::string path)
 {
-    menuItems = new Resource_Bundle("resources/en/menu.dat");
+    menuItems = new Resource_Bundle(path + "menu.dat");
 
-    this.option = 0;
+    this->option = 0;
 }
 
 Menu::~Menu()
@@ -40,15 +40,20 @@ void Menu::show()
       std::getline(std::cin, buffer);
 
       try {
-        this.option = std::stoi(buffer);
+        this->option = std::stoi(buffer);
       } catch(const std::invalid_argument& ia) {}   // when inserted letters as arguments
 
-    } while(this.option < min || this.option > max-1);
+    } while(this->option < min || this->option > max-1);
 }
 
 int Menu::getOption()
 {
-    return this.option;
+    return this->option;
+}
+
+void Menu::changeLocale(std::string path)
+{
+    menuItems->modifyBundle(path);
 }
 
 void Menu::destroy()
