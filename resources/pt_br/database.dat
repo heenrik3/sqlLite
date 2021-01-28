@@ -1,0 +1,5 @@
+name:Nome da base de dados:
+error:Nao executada
+success:Comando executado com sucesso
+notOpen:Nenhum BD aberto!
+input:Digite o comando SQL:
