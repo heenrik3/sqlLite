@@ -1,5 +1,0 @@
-name:Nome da base de dados:
-error:Erro ao criar BD:
-success:Base de dados criada/aberta com sucesso!
-notOpen:Nenhum BD aberto!
-input:Digite o comando SQL: 
