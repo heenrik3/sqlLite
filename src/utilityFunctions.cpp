@@ -63,8 +63,9 @@ std::string setPreferences()
 
           try {
             option = std::stoi(buffer);
-          } catch(const std::invalid_argument& ia) {}   // when inserted letters as arguments
-
+          }
+          catch(const std::invalid_argument& ia) {}   // when inserted letters as arguments
+          catch(const std::out_of_range& ia) {}
         } while(option < min || option > max-1);
 
       index = 1;
