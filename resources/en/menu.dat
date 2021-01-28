@@ -3,4 +3,5 @@ menu1:Create a database
 menu2:Create a table
 menu3:Insert data on table
 menu4:Delete data on table
-menu5:Exit
+menu5:Change language
+menu6:Exit

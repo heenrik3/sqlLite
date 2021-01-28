@@ -3,4 +3,5 @@ menu1:Criar uma base de dados
 menu2:Criar uma tabela
 menu3:Inserir dados numa tabela
 menu4:Deletar uma tabela
-menu5:Sair
+menu5:Mudar idioma
+menu6:Sair
