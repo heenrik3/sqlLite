@@ -102,7 +102,7 @@ void Database::deleteTable()
 */
 void Database::changeLocale(std::string path)
 {
-    resources->modifyBundle(path);
+    resources->modifyBundle(path + "database.dat");
 }
 
 bool Database::isDatabaseOpen()
