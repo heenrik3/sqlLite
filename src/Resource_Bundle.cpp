@@ -64,8 +64,6 @@ void Resource_Bundle::destroy()
 
 void Resource_Bundle::modifyBundle(std::string path)
 {
-
     destroy();
     bundle = load(path);
-
 }
