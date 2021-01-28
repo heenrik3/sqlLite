@@ -10,11 +10,11 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
 }
 
 
-Database::Database()
+Database::Database(std::string path)
 {
     this->db = nullptr;
 
-    resources = new ResourceBundle();
+    resources = new Resource_Bundle(path + "database.dat");
 }
 
 Database::~Database()
@@ -61,7 +61,7 @@ void Database::close()
       db = nullptr;
 
     } else {
-      std::cout << (*resources->database_messages)["notOpen"] << std::endl;
+      std::cout << (*resources->bundle)["notOpen"] << std::endl;
     }
 
 }
@@ -70,39 +70,19 @@ void Database::createOrOpenDatabase()
 {
     if (createDatabase()) {
         clear();
-        std::cout << (*resources->database_messages)["error"] << sqlite3_errmsg(this->db) << std::endl;
+        std::cout << (*resources->bundle)["error"] << sqlite3_errmsg(this->db) << std::endl;
     }
     else
     {
         clear();
-        std::cout << (*resources->database_messages)["success"] << std::endl;
+        std::cout << (*resources->bundle)["success"] << std::endl;
     }
 
 }
 
-void Database::execute(std::string query)
+void Database::execute()
 {
-  int exit;
-  char* messaggeError;
-
-  exit = sqlite3_exec(db,
-                      query.c_str(),      // sql string is converted to char array required by the function
-                      NULL,
-                      0,
-                      &messaggeError);
-
-  if (exit != SQLITE_OK) {
-
-      clear();
-      std::cerr << (*resources->database_messages)["error"] << std::endl;
-
-      sqlite3_free(messaggeError);
-  }
-  else
-  {
-    clear();
-    std::cout << (*resources->database_messages)["success"] << std::endl;
-  }
+    queryExecutor(getQuery());
 }
 /*
 void Database::createTable()
@@ -120,11 +100,9 @@ void Database::deleteTable()
     setResourceAndExec(*resources->delete_messages);
 }
 */
-void Database::changeLocale(std::string locale)
+void Database::changeLocale(std::string path)
 {
-
-    resources->setLocale(locale);
-
+    resources->modifyBundle(path);
 }
 
 bool Database::isDatabaseOpen()
@@ -137,12 +115,12 @@ bool Database::isDatabaseOpen()
     return true;
 }
 
-std::string Database::getSqlCommand()
+std::string Database::getQuery()
 {
     std::string command;
 
     clear();
-    std::cout << (*resources->database_messages)["input"] << std::endl;
+    std::cout << (*resources->bundle)["input"] << std::endl;
 
     fflush(stdin);
 
@@ -150,7 +128,7 @@ std::string Database::getSqlCommand()
 
     return command;
 }
-
+/*
 void Database::setResourceAndExec(std::map<std::string, std::string> m)   // this func receives a map containing strings resources,
 {                                                                         // test if there's a database connection, asks for SQL command
                                                                           // and pass them to be executed
@@ -163,18 +141,17 @@ void Database::setResourceAndExec(std::map<std::string, std::string> m)   // thi
   else {
 
     clear();
-    std::cout << (*resources->database_messages)["notOpen"] << std::endl;
+    std::cout << (*resources->bundle)["notOpen"] << std::endl;
   }
-}
+}*/
 
-void Database::execSQL(std::string sql,
-                      std::map<std::string, std::string> m)     // receives a string containing an sql command,
+void Database::queryExecutor(std::string query)     // receives a string containing an sql command,
 {                                                               // and a map containing error and success messages
   int exit;
   char* messaggeError;
 
   exit = sqlite3_exec(db,
-                      sql.c_str(),      // sql string is converted to char array required by the function
+                      query.c_str(),      // sql string is converted to char array required by the function
                       NULL,
                       0,
                       &messaggeError);
@@ -182,14 +159,14 @@ void Database::execSQL(std::string sql,
   if (exit != SQLITE_OK) {
 
       clear();
-      std::cerr << m["error"] << std::endl;
+      std::cerr << (*resources->bundle)["error"] + " :\n" + query << std::endl;
 
       sqlite3_free(messaggeError);
   }
   else
   {
     clear();
-    std::cout << m["success"] << std::endl;
+    std::cout << (*resources->bundle)["success"] << std::endl;
   }
 
 }
@@ -201,7 +178,7 @@ bool Database::createDatabase()
 
   clear();
 
-  std::cout << (*resources->database_messages)["name"] << std::endl;
+  std::cout << (*resources->bundle)["name"] << std::endl;
 
   fflush(stdin);
   std::getline(std::cin, tmpName);
