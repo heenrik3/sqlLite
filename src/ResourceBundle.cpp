@@ -18,19 +18,19 @@ ResourceBundle::~ResourceBundle()
     deleteResources();
 }
 
-void ResourceBundle::setLocale(std::string loc)
+void ResourceBundle::setLocale(std::string locale)
 {
 
     deleteResources();
-    initializer(loc);
+    initializer(locale);
 
 }
 
-void ResourceBundle::initializer(std::string loc)
+void ResourceBundle::initializer(std::string locale)
 {
   std::string path, dbName, tableName, insertName, deleteName;
 
-  path       = "resources/" + loc + "/";
+  path       = "resources/" + locale + "/";
   dbName     = "database.dat";
   tableName  = "table.dat";
   insertName = "insert.dat";

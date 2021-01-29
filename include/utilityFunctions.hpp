@@ -10,6 +10,8 @@
 #define utilityFunctions_hpp
 
 #include <iostream>
+#include <fstream>
+#include <map>
 
 #ifdef _WIN32
 #define clears "cls" // windows
@@ -20,6 +22,7 @@
 #endif
 
 void clear();
+std::string setPreferences();
 
 
 #endif /* utilityFunctions_hpp */

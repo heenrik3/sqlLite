@@ -28,7 +28,7 @@ public:
 
 private:
 
-    void initializer(std::string = "en");
+    void initializer(std::string locale = "en");
     std::map<std::string, std::string>* loadResources(std::string path);    // returns a map pointer with string resources
 
     void deleteResources();

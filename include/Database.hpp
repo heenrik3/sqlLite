@@ -3,12 +3,12 @@
 
 #include <iostream>
 #include <cstdbool>
-#include <vector>
+//#include <vector>
 #include <string>
 #include <new>
 
 #include "sqlite3.h"
-#include "ResourceBundle.hpp"
+#include "Resource_Bundle.hpp"
 #include "utilityFunctions.hpp"
 
 static int callback(void *NotUsed, int argc, char **argv, char **azColName);
@@ -17,30 +17,26 @@ class Database
 {
     public:
 
-      Database();
+      Database(std::string path);
       virtual ~Database();
       void close();
       void createOrOpenDatabase();
-      void createTable();
-      void insertData();
-      void deleteTable();
+      void execute();
 
-      void changeLocale();
+      void changeLocale(std::string path);
 
     private:
       sqlite3 *db;                                // database connection
-      ResourceBundle *resources;                  // holds a map bundle with strings resources to be used
+      Resource_Bundle *resources;                 // holds a map bundle with strings resources to be used
 
       bool createDatabase();                      // creates db
       bool isDatabaseOpen();                      // checks if there's a database connection available
 
-      void execSQL(std::string sql,
-                    std::map<std::string,
-                     std::string> m);             // receives a string with an sql command and a map
-      void setResourceAndExec(std::map<std::string,
+      void queryExecutor(std::string sql);        // receives a string with an sql command
+/*      void setResourceAndExec(std::map<std::string,
                                 std::string> m);  // receives a map with string resources
-
-      std::string getSqlCommand();                // asks for an input and returns a string containing an sql command by the user
+*/
+      std::string getQuery();                // asks for an input and returns a string containing an sql command by the user
 
 
 };
