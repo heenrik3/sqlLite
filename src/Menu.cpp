@@ -25,7 +25,7 @@ void Menu::show()
     std::string buffer;
     int min, max;
 
-    min = 1; max = 7;
+    min = 1; max = 5;
 
     do {
       clear();
