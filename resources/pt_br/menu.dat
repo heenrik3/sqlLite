@@ -1,7 +1,5 @@
 option:Escolha uma opcao:
 menu1:Criar uma base de dados
-menu2:Criar uma tabela
-menu3:Inserir dados numa tabela
-menu4:Deletar uma tabela
-menu5:Mudar idioma
-menu6:Sair
+menu2:Query
+menu3:Mudar idioma
+menu4:Sair

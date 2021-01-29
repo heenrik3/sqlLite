@@ -1,7 +1,5 @@
 option:Choose an option:
 menu1:Create a database
-menu2:Create a table
-menu3:Insert data on table
-menu4:Delete data on table
-menu5:Change language
-menu6:Exit
+menu2:Query
+menu3:Change language
+menu4:Exit
