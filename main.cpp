@@ -19,17 +19,17 @@ int main(int argc, char const *argv[])
         switch (m->getOption()) {
 
           case 1:
-
+                db->createOrOpenDatabase();
               break;
-          case 2: break;
-          case 3: break;
-          case 4: break;
-          case 5:
+          case 2:
+              db->execute();
+            break;
+          case 3:
               resourcesPath = setPreferences();
               m->changeLocale(resourcesPath);
               db->changeLocale(resourcesPath);
             break;
-          case 6: run = false; break;
+          case 4: run = false; break;
         }
 
     } while(run);
